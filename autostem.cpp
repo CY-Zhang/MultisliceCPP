@@ -1079,7 +1079,7 @@ void autostem::STEMsignals( double x[], double y[], int npos, float p[],
                     /*w = 2.*pi* ( xoff[ip]*kxp[ix] + yoff[ip]*kyp[iy] );
                     chi0 = (2.0*pi/wavlen) * chi( p, alx, aly, multiMode );
                     chi0= - chi0 + w;*/ //why use -chi0 ?????
-                    chi0 = chi( aber, wavlen, kxp[ix], kyp[iy], x[ip], y[ip] );
+                    chi0 = chi( aber, wavlen, kxp[ix], kyp[iy], xoff[ip], yoff[ip] );
                     probe[ip].re(ix,iy) = tr = (float) cos( chi0 );
                     probe[ip].im(ix,iy) = ti = (float) sin( chi0 ); //in probe.cpp -sin is used here???
                     sum0 += (double) (tr*tr + ti*ti);
@@ -1231,8 +1231,11 @@ void autostem::STEMsignals( double x[], double y[], int npos, float p[],
                                 phi = atan2( ky[iy], kx[ix] );
                                 /*  offset defocus by zslice so both lens referenced to 
                                    entrance surface of specimen  */
-                                chi0 = chi( aber, wavlen, kxp[ix], kyp[iy], x[ip], y[ip] );
-                                //chi0= - chi0;
+                                chi0 = chi1*k2* ( (chi2C + chi3C*k2)*k2 - dfC + zslice
+                                    + dfa2C*sin( 2.0*(phi-dfa2phiC) ) 
+                                    + 2.0F*dfa3C*wavlen*sqrt(k2)*
+                                    sin( 3.0*(phi-dfa3phiC) )/3.0 );
+                                chi0= - chi0;
                                 hr = (float) cos( chi0 );
                                 hi = (float) sin( chi0 );
                                 prr = probe[ip].re(ix,iy);  // real
