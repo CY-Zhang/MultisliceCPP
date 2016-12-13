@@ -1232,7 +1232,7 @@ void autostem::STEMsignals( double x[], double y[], int npos, float p[],
                                 /*  offset defocus by zslice so both lens referenced to 
                                    entrance surface of specimen  */
                                 chi0 = chi( aber, wavlen, kxp[ix], kyp[iy], x[ip], y[ip] );
-                                chi0= - chi0;
+                                //chi0= - chi0;
                                 hr = (float) cos( chi0 );
                                 hi = (float) sin( chi0 );
                                 prr = probe[ip].re(ix,iy);  // real
