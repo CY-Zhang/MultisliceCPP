@@ -1079,7 +1079,7 @@ void autostem::STEMsignals( double x[], double y[], int npos, float p[],
                     /*w = 2.*pi* ( xoff[ip]*kxp[ix] + yoff[ip]*kyp[iy] );
                     chi0 = (2.0*pi/wavlen) * chi( p, alx, aly, multiMode );
                     chi0= - chi0 + w;*/ //why use -chi0 ?????
-                    chi0 = chi( aber, wavlen, kxp[ix], kyp[iy], xoff[ip], yoff[ip] );
+                    chi0 = chi( aber, wavlen, kxp[ix], kyp[iy], x[ix], y[iy] );
                     probe[ip].re(ix,iy) = tr = (float) cos( chi0 );
                     probe[ip].im(ix,iy) = ti = (float) sin( chi0 ); //in probe.cpp -sin is used here???
                     sum0 += (double) (tr*tr + ti*ti);
