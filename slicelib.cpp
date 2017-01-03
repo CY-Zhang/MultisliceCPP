@@ -259,6 +259,71 @@ int askYN( const char message[] )
 
 }  /* end bessk0() */
 
+double oldchi( float p[], double alx, double aly, int multiMode )
+{
+    double theta, al, al2, aln;
+    double w, ct, st, c2t, s2t, c3t, s3t, c4t, s4t, c5t, s5t,
+        c6t, s6t;
+
+    aln = al2 = alx*alx + aly*aly;    /*  alpha squared, angle in k space */
+
+    /*  just rotationally symm. aberrations (faster) */
+    w = ( ( al2*p[pCS5]/6.0 +  0.25*p[pCS] )*al2 - 0.5*p[pDEFOCUS] )*al2;
+
+    if( multiMode != 0 ) {
+            /* ---- first order ----- */
+            theta = atan2( aly, alx );
+            ct = cos( theta );
+            st = sin( theta );
+            c2t = ct*ct - st*st;    /*  cos/sin of 2*theta */
+            s2t = 2.0*ct*st;
+            w += al2*(  p[pC12a]*c2t + p[pC12b]*s2t )/2.0;
+
+            al = sqrt( al2 );
+
+            /* ---- second order ----- */
+            /*   generate the other theta's recursively to reduce CPU time */
+            aln = al2*al;  /* alpha^3 */
+            c3t = ct*c2t - st*s2t;    /*  cos/sin of 3*theta */
+            s3t = ct*s2t + st*c2t;
+            w += aln*( p[pC21a]*ct + p[pC21b]*st + p[pC23a]*c3t + p[pC23b]*s3t )/3.0;
+
+            /* ---- third order ----- */
+            aln = al2*al2;  /* alpha^4 */
+            c4t = ct*c3t - st*s3t;    /*  cos/sin of 4*theta */
+            s4t = ct*s3t + st*c3t;
+            w += aln*( p[pC32a]*c2t + p[pC32b]*s2t + p[pC34a]*c4t 
+                     + p[pC34b]*s4t )/4.0;
+
+             /* ---- fourth order ----- */
+            aln = aln*al;  /* alpha^5 */
+            c5t = ct*c4t - st*s4t;    /*  cos/sin of 5*theta */
+            s5t = ct*s4t + st*c4t;
+            w += aln*( p[pC41a]*ct + p[pC41b]*st +  p[pC43a]*c3t + p[pC43b]*s3t
+                     + p[pC45a]*c5t + p[pC45b]*s5t )/5.0;
+
+              /* ---- fifth order ----- */
+            aln = aln*al;  /* alpha^6 */
+            c6t = ct*c5t - st*s5t;    /*  cos/sin of 5*theta */
+            s6t = ct*s5t + st*c5t;
+            w += aln*(  p[pC52a]*c2t + p[pC52b]*s2t +  p[pC54a]*c4t + p[pC54b]*s4t
+                      + p[pC56a]*c6t + p[pC56b]*s6t )/6.0;
+           
+#ifdef TEST_COS
+            string stemp;
+            ct = cos( 6*theta );    /*  quick test of recursion algebra */
+            st = sin( 6*theta );
+            if( fabs(ct-c6t)+fabs(st-s6t) > 1.0e-10 ) {
+                stemp = "cos/sin= " +toString(ct)+", "+ toString(st),", c6t/s6t= "+
+                        toString(c6t) +", "+ toString(s6t );
+                messageSL( stemp.c_str() );
+            }
+#endif
+    }
+
+    return( w );
+}
+
 /*------------------------ chi() ---------------------*/
 /*
         calculate the aberration function chi

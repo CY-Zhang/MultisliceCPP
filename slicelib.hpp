@@ -321,6 +321,7 @@ input:
 
 */
  double chi(double **aber, double wl, double kx, double ky, double dx, double dy);
+ double oldchi(float p[], double alx, double aly, int multiMode);
 
 
 /*--------------------- cputim() -----------------------------------*/

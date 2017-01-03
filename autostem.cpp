@@ -218,7 +218,6 @@ autostem::~autostem()
 
   return value is +1 for successs and negative for failure 
 */
-double *kxp2, *kyp2, *kx2, *ky2;
 
 int autostem::calculate( float param[], int multiMode, int natomin, unsigned long *iseed,
         int Znum[], float xa[], float ya[], float za[], float occ[], float wobble[],
@@ -1071,15 +1070,15 @@ void autostem::STEMsignals( double x[], double y[], int npos, float p[],
 
         sum0 = 0.0;
         for( ix=0; ix<nxprobe; ix++) {
-            /*alx = wavlen * kxp[ix];*/  /* x component of angle alpha */
+            alx = wavlen * kxp[ix];  /* x component of angle alpha */
             for( iy=0; iy<nyprobe; iy++) {
-                /*aly = wavlen * kyp[iy];*/  /* y component of angle alpha */
+                aly = wavlen * kyp[iy];  /* y component of angle alpha */
                 k2 = kxp2[ix] + kyp2[iy];
                 if( (k2 >= k2maxa) && (k2 <= k2maxb) ) {
-                    /*w = 2.*pi* ( xoff[ip]*kxp[ix] + yoff[ip]*kyp[iy] );
-                    chi0 = (2.0*pi/wavlen) * chi( p, alx, aly, multiMode );
-                    chi0= - chi0 + w;*/ //why use -chi0 ?????
-                    chi0 = chi( aber, wavlen, kxp[ix], kyp[iy], x[ix], y[iy] );
+                    w = 2.*pi* ( xoff[ip]*kxp[ix] + yoff[ip]*kyp[iy] );
+                    chi0 = (2.0*pi/wavlen) * oldchi( p, alx, aly, multiMode );
+                    chi0= - chi0 + w;
+                    //chi0 = -chi( aber, wavlen, kxp[ix], kyp[iy], xoff[ip], yoff[ip] );
                     probe[ip].re(ix,iy) = tr = (float) cos( chi0 );
                     probe[ip].im(ix,iy) = ti = (float) sin( chi0 ); //in probe.cpp -sin is used here???
                     sum0 += (double) (tr*tr + ti*ti);
@@ -1454,3 +1453,5 @@ void autostem::invert2D( float** pix, long nx, long ny )
 
 #undef SWAP
 };  // end autostem::invert2D()
+
+

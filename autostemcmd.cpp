@@ -252,9 +252,39 @@ int main( int argc, char *argv[ ] )
     if( ncelly < 1 ) ncelly = 1;
     if( ncellz < 1 ) ncellz = 1;
 
+    cout << "STEM probe parameters, V0(kv), Cs3(mm), Cs5(mm),"
+           << " df(Angstroms), apert1,2(mrad) :" << endl;
+    cin >> keV >> Cs3 >> Cs5 >> df >> apert1 >> apert2;
+    param[pDEFOCUS] = (float) df;
+    param[pCS]  = (float) ( Cs3*1.0e7 );
+    param[pCS5] = (float) ( Cs5*1.0e7 );
+    apert1 *= 0.001;   // convert to radians
+    apert2 *= 0.001;
+
+#ifdef MANY_ABERR
+    /*   get higher order aberrations if necessary */
+    cout << "type higher order aber. name (as C32a, etc.) followed\n"
+        << " by a value in mm. (END to end)" << endl;
+    done = multiMode = 0;
+    do{
+        cin >> cline;
+        if( cline.compare( "END" ) == 0 ) {
+            done = 1;
+        } else {
+            cin >> vz;
+            status = readCnm( cline, param, vz );        
+            if( status < 0 ) {
+                cout << "unrecognized aberration, exit..." << endl;
+                exit( EXIT_SUCCESS );
+            } else multiMode = 1;
+        }
+    } while( !done );
+
+#endif
+    
 /*  get more parameter etc */
 
-    cout << "STEM probe parameters, V0(kv)"
+/*    cout << "STEM probe parameters, V0(kv)"
            << " apert1,2(mrad) :" << endl;
     cin >> keV >> apert1 >> apert2;
     param[pDEFOCUS] = (float) df;
@@ -265,9 +295,9 @@ int main( int argc, char *argv[ ] )
 
     printf("First order aberrations: C1 (nm), A1 (nm, deg): \n");
     scanf("%lg %lg %lg", &aber[0][0], &aber[1][0], &aber[1][1]);
-    aber[0][1] = 0.0; /* no angle for C1 */
-    aber[0][0] *= 10.0; /* nm to Angstroms */
-    aber[1][0] *= 10.0;
+    aber[0][1] = 0.0; */ /* no angle for C1 */
+//    aber[0][0] *= 10.0; /* nm to Angstroms */
+/*    aber[1][0] *= 10.0;
 
     printf("Second order aberrations: A2 (nm, deg), B2 (nm, deg): \n");
     scanf("%lg %lg %lg %lg", &aber[2][0], &aber[2][1], &aber[3][0], &aber[3][1]);
@@ -276,29 +306,29 @@ int main( int argc, char *argv[ ] )
 
     printf("Third order aberrations: C3 (um), A3 (um, deg), S3 (nm, deg): \n");
     scanf("%lg %lg %lg %lg %lg", &aber[4][0], &aber[5][0], &aber[5][1], &aber[6][0], &aber[6][1]);
-    aber[4][1] = 0.0; /* no angle for C3 */
-    aber[4][0] *= 1.0e4; /* um to Angstroms */
-    aber[5][0] *= 1.0e4;
+    aber[4][1] = 0.0; */ /* no angle for C3 */
+//    aber[4][0] *= 1.0e4; /* um to Angstroms */
+/*    aber[5][0] *= 1.0e4;
     aber[6][0] *= 1.0e4;
 
     printf("Fourth order aberrations: A4 (um, deg), D4 (um, deg), B4 (um, deg): \n");
     scanf("%lg %lg %lg %lg %lg %lg", &aber[7][0], &aber[7][1], &aber[8][0], &aber[8][1], 
           &aber[9][0], &aber[9][1]);
-    aber[7][0] *= 1.0e4; /* um to Angstroms */
-    aber[8][0] *= 1.0e4;
-    aber[9][0] *= 1.0e4;
+    aber[7][0] *= 1.0e4;*/ /* um to Angstroms */
+//    aber[8][0] *= 1.0e4;
+//    aber[9][0] *= 1.0e4;
 
-    printf("Fifth order aberrations: C5 (mm), A5 (mm, deg): \n");
-    scanf("%lg %lg %lg", &aber[10][0], &aber[11][0], &aber[11][1]);
-    aber[10][1] = 0.0; /* no angle for C5 */
-    aber[10][0] *= 1.0e7; /* mm to Angstroms */
-    aber[11][0] *= 1.0e7;
+//    printf("Fifth order aberrations: C5 (mm), A5 (mm, deg): \n");
+//    scanf("%lg %lg %lg", &aber[10][0], &aber[11][0], &aber[11][1]);
+//    aber[10][1] = 0.0; /* no angle for C5 */
+//    aber[10][0] *= 1.0e7; /* mm to Angstroms */
+//    aber[11][0] *= 1.0e7;
 
-    for(i=0; i<12; i++) {
+/*    for(i=0; i<12; i++) {
       aber[i][1] *= 180.0/pi;
       aber[i][2] = sin(aber[i][1]);
       aber[i][3] = cos(aber[i][1]);
-    }
+    } */
 
 
 
