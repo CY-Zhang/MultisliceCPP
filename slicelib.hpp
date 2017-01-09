@@ -320,7 +320,9 @@ input:
            set to 0 to speed up the calculation (no C34a etc.)
 
 */
- double chi(double **aber, double wl, double kx, double ky, double dx, double dy);
+ double chi(double **aber, double wl, float kx, float ky, double dx, double dy);
+
+
  double oldchi(float p[], double alx, double aly, int multiMode);
 
 
@@ -385,7 +387,7 @@ void free3D( void *** f, int nx, int ny );
     nk     = integer number of pixels
     ak     = real full scale size of image in pixels
 */
-void freqn( double *ko, double *ko2, double *xo, int nk, double ak );
+void freqn( float *ko, float *ko2, float *xo, int nk, double ak );
 
 /*---------------------------- malloc1D() -------------------------------*/
 /*
@@ -522,7 +524,7 @@ int parlay( const char c[], int islice[], int nsmax, int lmax, int *nslice,
 */
 void propagate( cfpix &wave, 
     float* propxr, float* propxi, float* propyr, float* propyi,
-    double* kx2, double* ky2, float k2max, int nx, int ny );
+    float* kx2, float* ky2, float k2max, int nx, int ny );
 
 /*---------------------------- ranflat -------------------------------*/
 /*

@@ -355,7 +355,7 @@ contains the sine of the angle, and the fourth column contains the cosine.
         kx, ky = spatial freq (in 1/Ang)
         dx,dy = offset (in Ang)
 */
-double chi( double **aber, double wl, double kx, double ky, double dx, double dy)
+double chi( double **aber, double wl, float kx, float ky, double dx, double dy)
 {
     double c, phi;
     double kxr, kyr;
@@ -520,7 +520,7 @@ void free3D( void *** f, int nx, int ny )
     nk     = integer number of pixels
     ak     = real full scale size of image in pixels
 */
-void freqn( double *ko, double *ko2, double *xo, int nk, double ak )
+void freqn( float *ko, float *ko2, float *xo, int nk, double ak )
 {
     int i, imid;
 
@@ -528,11 +528,11 @@ void freqn( double *ko, double *ko2, double *xo, int nk, double ak )
     imid = (int) ( nk/2.0 + 0.5);   /* when nk may not be 2^m */
 
     for( i=0; i<nk; i++) {
-        xo[i] = ((double) (i * ak) ) / ((double)(nk-1));
+        xo[i] = ((float) (i * ak) ) / ((float)(nk-1));
         if ( i > imid ) {
-            ko[i]  = ((double)(i-nk)) / ((double)ak);
+            ko[i]  = ((float)(i-nk)) / ((float)ak);
         } else {
-            ko[i]  = ((double)i) / ((double)ak);
+            ko[i]  = ((float)i) / ((float)ak);
         }
         ko2[i] = ko[i] * ko[i];
     }
@@ -873,7 +873,7 @@ int parlay( const char c[], int islice[], int nsmax, int lmax,
 */
 void propagate( cfpix &wave,
     float* propxr, float* propxi, float* propyr, float* propyi,
-    double* kx2, double* ky2, float k2max, int nx, int ny )
+    float* kx2, float* ky2, float k2max, int nx, int ny )
 {
     int ix, iy;
     float pxr, pxi, pyr, pyi, wr, wi, tr, ti;

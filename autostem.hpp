@@ -222,7 +222,7 @@ private:
         cfpix *probe, trans;     // complex probes and transmission functions
 
         float zmin, zmax;
-        double *kx, *ky, *kx2, *ky2, *kxp, *kyp, *kxp2, *kyp2;
+        float *kx, *ky, *kx2, *ky2, *kxp, *kyp, *kxp2, *kyp2;
         float *propxr, *propxi;   /* complex propagator vs x */
         float *propyr, *propyi;   /* complex propagator vs y */
         float *xp, *yp;

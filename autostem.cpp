@@ -238,7 +238,7 @@ int autostem::calculate( float param[], int multiMode, int natomin, unsigned lon
        tctx, tcty, dx, dy, ctiltx, ctilty, sourcesize, sourceFWHM,
        vz, rsq, k2maxa, k2maxb, k2;
 
-     double *kx, *ky, *xp, *yp, *kxp, *kyp; // *kxp2, *kyp2, *kx2, *ky2;
+    /* double *kx, *ky, *xp, *yp, *kxp, *kyp;*/ // *kxp2, *kyp2, *kx2, *ky2;
 
     // ---- get setup parameters from param[]
     ax = param[ pAX ];
@@ -382,20 +382,20 @@ int autostem::calculate( float param[], int multiMode, int natomin, unsigned lon
     
     */
 
-    kx  = (double*) malloc1D( nx, sizeof(double), "kx" );
-    ky  = (double*) malloc1D( ny, sizeof(double), "ky" );
-    kx2 = (double*) malloc1D( nx, sizeof(double), "kx2" );
-    ky2 = (double*) malloc1D( ny, sizeof(double), "ky2" );
-    xp  = (double*) malloc1D( nx, sizeof(double), "x2" );
-    yp  = (double*) malloc1D( ny, sizeof(double), "y2" );
+    kx  = (float*) malloc1D( nx, sizeof(float), "kx" );
+    ky  = (float*) malloc1D( ny, sizeof(float), "ky" );
+    kx2 = (float*) malloc1D( nx, sizeof(float), "kx2" );
+    ky2 = (float*) malloc1D( ny, sizeof(float), "ky2" );
+    xp  = (float*) malloc1D( nx, sizeof(float), "x2" );
+    yp  = (float*) malloc1D( ny, sizeof(float), "y2" );
 
     freqn( kx, kx2, xp, nx, ax );
     freqn( ky, ky2, yp, ny, by );
 
-    kxp  = (double*) malloc1D( nxprobe, sizeof(double), "kxp" );
-    kyp  = (double*) malloc1D( nyprobe, sizeof(double), "kyp" );
-    kxp2 = (double*) malloc1D( nxprobe, sizeof(double), "kxp2" );
-    kyp2 = (double*) malloc1D( nyprobe, sizeof(double), "kyp2" );
+    kxp  = (float*) malloc1D( nxprobe, sizeof(float), "kxp" );
+    kyp  = (float*) malloc1D( nyprobe, sizeof(float), "kyp" );
+    kxp2 = (float*) malloc1D( nxprobe, sizeof(float), "kxp2" );
+    kyp2 = (float*) malloc1D( nyprobe, sizeof(float), "kyp2" );
     
     freqn( kxp, kxp2, xp, nxprobe, dxp = ax*((double)nxprobe)/nx );
     freqn( kyp, kyp2, yp, nyprobe, dyp = by*((double)nyprobe)/ny );
@@ -816,7 +816,7 @@ void autostem::CountBeams( float param[], int &nbeamp, int &nbeampo, float &res,
     //  use all local array variables so I don't accidentally
     //     disturb the main calculation
     int ix, iy, nx1, ny1, nxprobe1, nyprobe1;
-    double *xp1, *yp1, *kxp1, *kyp1, *kxp21, *kyp21;
+    float *xp1, *yp1, *kxp1, *kyp1, *kxp21, *kyp21;
     float ax, by, wavl, apert1, apert2;
     double sum, k2maxp, k2maxa, k2maxb, k2;
 
@@ -847,12 +847,12 @@ void autostem::CountBeams( float param[], int &nbeamp, int &nbeampo, float &res,
     //  probe sampling
     //  the only way to do this is to do part of the calculation and
     //    throw away the results (kx,ky etc.) - but only a small bit wasted
-    xp1  = (double*) malloc1D( nxprobe1, sizeof(double), "xp1" );
-    yp1  = (double*) malloc1D( nyprobe1, sizeof(double), "yp1" );
-    kxp1  = (double*) malloc1D( nxprobe1, sizeof(double), "kxp1" );
-    kyp1  = (double*) malloc1D( nyprobe1, sizeof(double), "kyp1" );
-    kxp21 = (double*) malloc1D( nxprobe1, sizeof(double), "kxp21" );
-    kyp21 = (double*) malloc1D( nyprobe1, sizeof(double), "kyp21" );
+    xp1  = (float*) malloc1D( nxprobe1, sizeof(float), "xp1" );
+    yp1  = (float*) malloc1D( nyprobe1, sizeof(float), "yp1" );
+    kxp1  = (float*) malloc1D( nxprobe1, sizeof(float), "kxp1" );
+    kyp1  = (float*) malloc1D( nyprobe1, sizeof(float), "kyp1" );
+    kxp21 = (float*) malloc1D( nxprobe1, sizeof(float), "kxp21" );
+    kyp21 = (float*) malloc1D( nyprobe1, sizeof(float), "kyp21" );
     
     freqn( kxp1, kxp21, xp1, nxprobe1, ax*((double)nxprobe1)/nx1 );
     freqn( kyp1, kyp21, yp1, nyprobe1, by*((double)nyprobe1)/ny1 );
@@ -1005,8 +1005,6 @@ void autostem::STEMsignals( double x[], double y[], int npos, float p[],
     cfpix cpix;            /* complex confocal image */
 
     /* ------ make sure x,y are ok ------ */
-    printf("kxp[1] = %f\n", kxp[1] );
-    printf("xp[1] = %f\n", xp[1] );
 
 
     for( ip=0; ip<npos; ip++) {
@@ -1076,9 +1074,9 @@ void autostem::STEMsignals( double x[], double y[], int npos, float p[],
                 k2 = kxp2[ix] + kyp2[iy];
                 if( (k2 >= k2maxa) && (k2 <= k2maxb) ) {
                     w = 2.*pi* ( xoff[ip]*kxp[ix] + yoff[ip]*kyp[iy] );
-                    chi0 = (2.0*pi/wavlen) * oldchi( p, alx, aly, multiMode );
-                    chi0= - chi0 + w;
-                    //chi0 = -chi( aber, wavlen, kxp[ix], kyp[iy], xoff[ip], yoff[ip] );
+                    /*chi0 = (2.0*pi/wavlen) * oldchi( p, alx, aly, multiMode );
+                    chi0= - chi0 + w;*/
+                    chi0 = chi( aber, wavlen, kxp[ix], kyp[iy], xoff[ip], yoff[ip] );
                     probe[ip].re(ix,iy) = tr = (float) cos( chi0 );
                     probe[ip].im(ix,iy) = ti = (float) sin( chi0 ); //in probe.cpp -sin is used here???
                     sum0 += (double) (tr*tr + ti*ti);
