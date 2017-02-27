@@ -1,6 +1,10 @@
 Multislice package updated 12/9/16, cz
 
-Update on 1/9/16:
+Update on 2/27/17:
+- probe, auotslic modified to use the freqn function with float variables
+- makefile updated to compile/remove all files we have here
+
+Update on 1/9/17:
 - function freqn variable changed back to float (from double) to avoid some simulation error
 - currently only autostem and atompot can be compiled, probe, autoslic needs to be adapted to he new chi function
 - this version doesn't include sensitivity map yet, sensitivity map version can be found in ACI/MultisliceCPPNew, which doesn't contain adapted chi function

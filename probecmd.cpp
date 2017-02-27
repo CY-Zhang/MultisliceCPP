@@ -110,7 +110,7 @@ int main()
         done, status, multiMode, NPARAM;
     float rmin, rmax, aimin, aimax, p2, scale;
     float *param, pixr, pixi, **pixsq;
-    double *kx, *ky, *kx2, *ky2, *xpos, *ypos; /*change from float to double*/
+    float *kx, *ky, *kx2, *ky2, *xpos, *ypos; /*change from float to double*/
     double k2max, keV, wavlen, ax, by, rx, ry,
         rx2, ry2, pi, dx, dy, pixel, Cs3, Cs5, df, time, apert;
     double  x;
@@ -223,14 +223,14 @@ int main()
 
     pixsq = (float**) malloc2D( nx, ny, sizeof(float), "pixsq" );
 
-    kx   = (double*) malloc1D( nx, sizeof(double), "kx" );
-    kx2  = (double*) malloc1D( nx, sizeof(double), "kx2" );
-    xpos = (double*) malloc1D( nx, sizeof(double), "xpos" );
+    kx   = (float*) malloc1D( nx, sizeof(float), "kx" );
+    kx2  = (float*) malloc1D( nx, sizeof(float), "kx2" );
+    xpos = (float*) malloc1D( nx, sizeof(float), "xpos" );
     freqn( kx, kx2, xpos, nx, ax );
 
-    ky   = (double*) malloc1D( ny, sizeof(double), "ky" );
-    ky2  = (double*) malloc1D( ny, sizeof(double), "ky2" );
-    ypos = (double*) malloc1D( ny, sizeof(double), "ypos" );
+    ky   = (float*) malloc1D( ny, sizeof(float), "ky" );
+    ky2  = (float*) malloc1D( ny, sizeof(float), "ky2" );
+    ypos = (float*) malloc1D( ny, sizeof(float), "ypos" );
     freqn( ky, ky2, ypos, ny, by );
 
     cpix.resize( nx, ny );

@@ -183,7 +183,7 @@ void autoslic::abbPhase2D( cfpix &ab2D, float param[], int multiMode )
 {
     int ix, iy, ixmid, iymid, nx, ny;
     float k2, k2max, v0, wavlen, ax, by, pi, t;
-    double *kx, *ky, *xpos, *ypos, *kx2, *ky2;
+    float *kx, *ky, *xpos, *ypos, *kx2, *ky2;
     double chi0, alx, aly;
     double **aber, xp, yp;
 
@@ -200,14 +200,14 @@ void autoslic::abbPhase2D( cfpix &ab2D, float param[], int multiMode )
 
     //----- calculate spatial frequencies and positions for future use 
 
-    kx   = (double*) malloc1D( nx, sizeof(double), "kx" );
-    kx2  = (double*) malloc1D( nx, sizeof(double), "kx2" );
-    xpos = (double*) malloc1D( nx, sizeof(double), "xpos" );
+    kx   = (float*) malloc1D( nx, sizeof(float), "kx" );
+    kx2  = (float*) malloc1D( nx, sizeof(float), "kx2" );
+    xpos = (float*) malloc1D( nx, sizeof(float), "xpos" );
     freqn( kx, kx2, xpos, nx, ax );
 
-    ky   = (double*) malloc1D( ny, sizeof(double), "ky" );
-    ky2  = (double*) malloc1D( ny, sizeof(double), "ky2" );
-    ypos = (double*) malloc1D( ny, sizeof(double), "ypos" );
+    ky   = (float*) malloc1D( ny, sizeof(float), "ky" );
+    ky2  = (float*) malloc1D( ny, sizeof(float), "ky2" );
+    ypos = (float*) malloc1D( ny, sizeof(float), "ypos" );
     freqn( ky, ky2, ypos, ny, by );
 
     //  rearrange frequencies before calculation so we don't
@@ -314,7 +314,7 @@ void autoslic::calculate(cfpix &pix, cfpix &wave0, cfpix &depthpix,
         temperature;
     float tr, ti, wr, wi;
 
-    double *kx, *ky, *xpos, *ypos, *kx2, *ky2;
+    float *kx, *ky, *xpos, *ypos, *kx2, *ky2;
     float *x2, *y2, *z2, *occ2;
     float *propxr, *propxi, *propyr, *propyi;
 
@@ -401,14 +401,14 @@ void autoslic::calculate(cfpix &pix, cfpix &wave0, cfpix &depthpix,
     ixmid = nx/2;
     iymid = ny/2;
 
-    kx   = (double*) malloc1D( nx, sizeof(double), "kx" );
-    kx2  = (double*) malloc1D( nx, sizeof(double), "kx2" );
-    xpos = (double*) malloc1D( nx, sizeof(double), "xpos" );
+    kx   = (float*) malloc1D( nx, sizeof(float), "kx" );
+    kx2  = (float*) malloc1D( nx, sizeof(float), "kx2" );
+    xpos = (float*) malloc1D( nx, sizeof(float), "xpos" );
     freqn( kx, kx2, xpos, nx, ax );
 
-    ky   = (double*) malloc1D( ny, sizeof(double), "ky" );
-    ky2  = (double*) malloc1D( ny, sizeof(double), "ky2" );
-    ypos = (double*) malloc1D( ny, sizeof(double), "ypos" );
+    ky   = (float*) malloc1D( ny, sizeof(float), "ky" );
+    ky2  = (float*) malloc1D( ny, sizeof(float), "ky2" );
+    ypos = (float*) malloc1D( ny, sizeof(float), "ypos" );
     freqn( ky, ky2, ypos, ny, by );
 
     /*---- allocate some more arrays and initialize wavefunction ----*/
@@ -903,7 +903,7 @@ void autoslic::messageAS( std::string &smsg,  int level )
 void autoslic::trlayer(  const float x[], const float y[], const float occ[],
             const int Znum[], const int natom, const float ax, const float by,
             const float kev, cfpix &trans, const int nx, const int ny,
-            const double kx2[], const double ky2[],
+            const float kx2[], const float ky2[],
             double *phirms, int *nbeams, const float k2max  )
 {
     int idx, idy, i, ixo, iyo, ix, iy, ixw, iyw, nx1, nx2, ny1, ny2;

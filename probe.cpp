@@ -143,7 +143,7 @@ void probe::invert2D( float** pix, long nx, long ny )
 
 int probe::makeProbe( cfpix &cpix, int nx, int ny, double xp, double yp,
     double wavlen, double k2max, double pixel, double **aber,
-    int ismoth, double kx[], double kx2[], double ky[], double ky2[] )
+    int ismoth, float kx[], float kx2[], float ky[], float ky2[] )
 { 
     int ix, iy, npixels;
     float scale;

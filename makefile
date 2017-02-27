@@ -10,7 +10,7 @@
 #
 # Each file name is assumed to be all lower case.
 #
-# last modified 8-feb-2006 ejk
+# last modified 02-27-17 cz
 #
 
 # define compiler with optimize flag
@@ -30,38 +30,38 @@ WLIBS = slicelib.o floatTIFF.o cfpix.o -lfftw3f_threads -lfftw3f
 all:
 	make atompot
 	make autoslic
-	make display
+#	make display
 	make image
 	make mulslice
 	make probe
-	make slicview
+#	make slicview
 	make stemslic
 	make sumpix
 	make autostem
-	make ktiff2dm
-	make autowave
-	make autopacbed
+#	make ktiff2dm
+#	make autowave
+#	make autopacbed
 #
 #  entry point to remove compiled files
 #
 remove:
 	${DEL}$ atompot
 	${DEL}$ autoslic
-	${DEL}$ display
+#	${DEL}$ display
 	${DEL}$ image
 	${DEL}$ mulslice
 	${DEL}$ probe
-	${DEL}$ slicview
+#	${DEL}$ slicview
 	${DEL}$ stemslic
 	${DEL}$ sumpix
-	${DEL}$ ktiff2dm
-	${DEL}$ autowave
-	${DEL}$ fft2dc.o
-	${DEL}$ slicelib.o
-	${DEL}$ tiffsubs.o
-	${DEL}$ autopacbed
 	${DEL}$ autostem
-	${DEL}$ writegfx.o
+#	${DEL}$ autowave
+	${DEL}$ cfpix.o
+	${DEL}$ slicelib.o
+	${DEL}$ floatTIFF.o
+#	${DEL}$ autopacbed
+#	${DEL}$ autostem
+#	${DEL}$ writegfx.o
 #
 #  main programs
 #

@@ -173,7 +173,7 @@ private:
         void trlayer( const float x[], const float y[], const float occ[],
             const int Znum[], const int natom, const float ax, const float by,
             const float kev, cfpix &trans, const int nx, const int ny,
-            const double kx2[], const double ky2[],
+            const float kx2[], const float ky2[],
             double *phirms, int *nbeams, const float k2max );
 
         std::string sbuffer;
