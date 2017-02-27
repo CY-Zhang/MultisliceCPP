@@ -1,6 +1,11 @@
 Multislice package updated 12/9/16, cz
 
-Updates in 12/9/16 version:
+Update on 1/9/16:
+- function freqn variable changed back to float (from double) to avoid some simulation error
+- currently only autostem and atompot can be compiled, probe, autoslic needs to be adapted to he new chi function
+- this version doesn't include sensitivity map yet, sensitivity map version can be found in ACI/MultisliceCPPNew, which doesn't contain adapted chi function
+
+Updates on 12/9/16:
 -applied aberration function following Rose et al notation
 -connect probe, autoslic, autostem to the new aberration function
 -update k space parameters that is created by function freqn to double instead of float

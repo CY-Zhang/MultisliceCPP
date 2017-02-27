@@ -1,0 +1,23 @@
+STO_3x3x10.xyz
+1 1 1
+200 0 24.5
+0 0 0
+0 0 0 0
+0 0 0 0 0
+0 0 0 0 0 0
+0 0 0
+2048 2048
+2048 2048
+0 0
+n
+1
+STO_Multisclie
+2
+54 270 m
+84.42 422 m
+7.7 7.92 7.7 7.92 20 20
+1.9525
+y
+300
+20
+0 //source size (FWHM in Ang, use 0, will consider later)
