@@ -38,6 +38,7 @@ all:
 	make stemslic
 	make sumpix
 	make autostem
+	make autocbed
 #	make ktiff2dm
 #	make autowave
 #	make autopacbed
@@ -74,6 +75,9 @@ autoslic: autoslic.cpp autosliccmd.cpp ${MYLIBS}
 
 autostem: autostem.cpp autostemcmd.cpp ${MYLIBS}
 	${CC} -fopenmp -o autostem autostemcmd.cpp autostem.cpp ${WLIBS} 
+
+autocbed: autocbed.cpp autocbedcmd.cpp ${MYLIBS}
+	${CC} -fopenmp -o autocbed autocbedcmd.cpp autocbed.cpp ${WLIBS}
 
 display: display.cpp  ${MYLIBS}
 	${CC} -o display display.cpp ${WLIBS}

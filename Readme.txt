@@ -1,4 +1,9 @@
-Multislice package updated 12/9/16, cz
+Multislice package updated 06/09/17, cz
+
+Update on 06/09/17
+- Added autocbed to the package
+- Both CBED and PACBED would be saved as tif file in the output, CBED follows notation of Name_x-y-thickness.tif
+- Output image would have the original single precision image on the second layer, the first layer and third layer is meaningless
 
 Update on 2/27/17:
 - probe, auotslic modified to use the freqn function with float variables
@@ -21,5 +26,6 @@ part of the package can be compiled with g++ on ACI by type
 	make autostem
 	make image
 	make probe
+	make autocbed
 
 currently not compatible with condor_compile due to some library problem
