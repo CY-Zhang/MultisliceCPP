@@ -141,6 +141,7 @@ ANY OTHER PROGRAM).
 #include <iostream>  //  C++ stream IO
 #include <fstream>
 #include <iomanip>   //  to format the output
+#include <sstream>
 
 using namespace std;
 
@@ -148,6 +149,7 @@ using namespace std;
 #include "slicelib.hpp"   // misc. routines for multislice
 #include "floatTIFF.hpp"  // file I/O routines in TIFF format
 #include "autostem.hpp"   //  the calculation part
+#include "tiffsubs.h"
 
 #define MANY_ABERR      //  define to include many aberrations
 
@@ -157,7 +159,8 @@ using namespace std;
 #ifdef USE_OPENMP
 #include <omp.h>
 /*  get wall time for benchmarking openMP */
-#define walltim() ( omp_get_wtime() )
+//#define walltim() ( omp_get_wtime() )
+#define walltim() (0)
 double walltimer;
 #endif
 
@@ -210,6 +213,9 @@ int main( int argc, char *argv[ ] )
     floatTIFF myFile;
 
     autostem ast;
+
+    char fileout_p1[3], fileout_p2[3];
+    char *fileout_char = new char[512];
 
 /* start by announcing version etc */
 
@@ -727,12 +733,12 @@ int main( int argc, char *argv[ ] )
         param[ pNXOUT ] = (float) nxout;  // size of output (in pixels)
         param[ pNYOUT ] = (float) nyout;
 
-        for( i=0; i<NPARAM; i++) myFile.setParam( i, param[i] );
+/*        for( i=0; i<NPARAM; i++) myFile.setParam( i, param[i] );
         myFile.setnpix( 1 );
         myFile.resize( nxout, nyout );
         aimin = aimax = 0.0F;
-
-        for( it=0; it<nThick; it++)
+*/
+/*        for( it=0; it<nThick; it++)
         for( i=0; i<ndetect; i++) {
             //sprintf( fileout, "%s%03d%03d.tif", fileoutpre, i, it );   // plain C
             fileout = fileoutpre + toString(i) + "_" + toString(it) + ".tif";
@@ -768,7 +774,38 @@ int main( int argc, char *argv[ ] )
                     << ", detector= " << almin[i] << " to " << almax[i] << " Angst., "
                     << "thicknes= " << ThickSave[it] << " A, range= " << rmin[it][i]
                     << " to " << rmax[it][i] << endl;
-        }  /*  end for(i=... */
+        }    /*end for(i=... */
+
+        for( it=0; it<nThick; it++)
+        for( i=0; i<ndetect; i++) {
+            /*fileout_p1.clear(); //should have some better way to do that as tcreateFloatPixFile needs char input format cz
+            fileout_p2.clear();
+            cout << fileout_p1.str() << endl;
+            fileout_p1 << std::setfill('0') << std::setw(3) << i;
+            fileout_p2 << std::setfill('0') << std::setw(3) << it; // alternate way to set the file name in accordance to reassemble procedure
+            fileout = fileoutpre + fileout_p1.str() + fileout_p2.str() + ".tif";*/
+            sprintf(fileout_char,"%s%03d%03d.tif",fileoutpre.c_str(),i,it);
+            //sprintf( fileout, "%s%03d%03d.tif", fileoutpre, i, it );  // for plain c
+            fp << "file: " << fileout << "output pix range: " << rmin[it][i] << " to " << rmax[it][i] << endl;
+            //printf("%s: output pix range : %g to %g\n", fileout, rmin[it][i], rmax[it][i]);
+            param[pRMAX] = rmax[it][i];
+            param[pRMIN] = rmin[it][i];
+            param[pMINDET] = (float) ( almin[i] * 0.001 );
+            param[pMAXDET] = (float) ( almax[i] * 0.001 );
+            //strcpy(fileout_char, fileout.c_str());
+            if( tcreateFloatPixFile( fileout_char, pixr[i+it*ndetect],(long) nxout, (long) nyout, 1, param ) != 1 ) {
+              cout << "Cannot write output file " << fileout << endl;
+                //printf("Cannot write output file %s.\n", fileout );
+            }
+            fp <<"file: " << fileout
+                    << ", detector= " << almin[i] << " to " << almax[i] << " Angst., "
+                    << "thicknes= " << ThickSave[it] << " A, range= " << rmin[it][i]
+                    << " to " << rmax[it][i] << endl;
+            /*fprintf(fp,"file: %s, detector= %g to %g mrad, "
+                "thicknes= %g A, range= %g to %g\n", fileout,
+                almin[i], almax[i], ThickSave[it], rmin[it][i], rmax[it][i]);*/ // for plain c
+        }
+
 
         fp.close();
 

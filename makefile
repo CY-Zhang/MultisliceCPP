@@ -15,14 +15,14 @@
 
 # define compiler with optimize flag
 #CC = gcc -ansi -pedantic -O 		# original
-CC = g++
+CC = condor_compile g++
 #DEL = del  # windows/mingw - doesn't work without .exe in file name
 DEL = rm  # unix
 
 # define libraries
 MYLIBS = slicelib.o floatTIFF.o cfpix.o 
 LIBS = ${MYLIBS}$
-WLIBS = slicelib.o floatTIFF.o cfpix.o -lfftw3f_threads -lfftw3f
+WLIBS = slicelib.o floatTIFF.o cfpix.o -L/home/czhang376/bin/fftw/lib -lfftw3f
 
 #
 #  entry point to build everything
@@ -74,7 +74,7 @@ autoslic: autoslic.cpp autosliccmd.cpp ${MYLIBS}
 	${CC} -fopenmp -o autoslic autosliccmd.cpp autoslic.cpp ${WLIBS}
 
 autostem: autostem.cpp autostemcmd.cpp ${MYLIBS}
-	${CC} -fopenmp -o autostem autostemcmd.cpp autostem.cpp ${WLIBS} 
+	${CC}  -o autostem autostemcmd.cpp autostem.cpp ${WLIBS} 
 
 autocbed: autocbed.cpp autocbedcmd.cpp ${MYLIBS}
 	${CC} -fopenmp -o autocbed autocbedcmd.cpp autocbed.cpp ${WLIBS}

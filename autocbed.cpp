@@ -713,11 +713,11 @@ int autostem::calculate( float param[], int multiMode, int natomin, unsigned lon
     
         } /* end for(iwobble... ) */
 
-        for (ixp = 0; ixp < pacbed_nx; ixp++){
+        /*for (ixp = 0; ixp < pacbed_nx; ixp++){
           for (iyp = 0; iyp < pacbed_ny; iyp++){
             printf("cbed_1-0-0[%d][%d]=%f\n", ixp, iyp, cbed_signals[ixp][iyp][nyout*nThick]);
           }
-        }  
+        }  */
 
         /*  find range to output data files  */
         for( it=0; it<nThick; it++)

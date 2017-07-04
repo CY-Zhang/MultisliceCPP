@@ -202,8 +202,8 @@ void cfpix::init( int mode, int nthreads )
         if( 0 == mode ) {
             initLevel = mode;
             if( nthreads > 1 ) {    //  initialize FFTW multithreading
-                ns = fftwf_init_threads();
-                fftwf_plan_with_nthreads( nthreads );
+                //ns = fftwf_init_threads();
+                //fftwf_plan_with_nthreads( nthreads );
             }
             planTi = fftwf_plan_dft_2d( nxl, nyl, data, data, 
                 FFTW_FORWARD, FFTW_MEASURE );   /* inverse in place */
