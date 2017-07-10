@@ -157,7 +157,7 @@ using namespace std;
 #ifdef USE_OPENMP
 #include <omp.h>
 /*  get wall time for benchmarking openMP */
-#define walltim() ( omp_get_wtime() )
+//#define walltim() ( omp_get_wtime() )
 double walltimer;
 #endif
 
@@ -478,7 +478,7 @@ int main( int argc, char *argv[ ] )
 
     timer = cputim();   /* get initial CPU time */
 #ifdef USE_OPENMP
-    walltimer = walltim();  /* wall time for opneMP */
+    //walltimer = walltim();  /* wall time for opneMP */
 #endif
 
     /*  calculate relativistic factor and electron wavelength */
@@ -1041,7 +1041,7 @@ int main( int argc, char *argv[ ] )
 
     cout << "CPU time = " << cputim()-timer << " sec." << endl;
 #ifdef USE_OPENMP
-    cout << "wall time = " << walltim() - walltimer << " sec." << endl;
+    //cout << "wall time = " << walltim() - walltimer << " sec." << endl;
 #endif
 
     return( 0 );
