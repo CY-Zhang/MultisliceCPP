@@ -148,6 +148,7 @@ using namespace std;
 #include "slicelib.hpp"   // misc. routines for multislice
 #include "floatTIFF.hpp"  // file I/O routines in TIFF format
 #include "autocbed.hpp"   //  the calculation part
+#include "tiffsubs.h"
 
 #define MANY_ABERR      //  define to include many aberrations
 
@@ -191,7 +192,7 @@ int main( int argc, char *argv[ ] )
     float  **rmin, **rmax;
     float *xa, *ya, *za, *occ, *wobble;
     float pacbed_kmax, BW, sum, k2maxp;
-    float ***pacbed, ***cbed;
+    float ***pacbed, ***cbed, **cbed_out;
 
     float zmin, zmax;
     float **pacbedPix;        //  to save position averaged CBED 
@@ -672,6 +673,9 @@ int main( int argc, char *argv[ ] )
     // 3D array for PACBED patterns
     pacbed = (float***) malloc3D(pacbed_nx, pacbed_ny, nThick, sizeof(float), "pacbed");
 
+    // 2d array for CBED outputs
+    cbed_out = (float**)malloc2D(pacbed_nx, pacbed_ny, sizeof(float),"cbed_out");
+
     
 
    //  do the autostem calculation
@@ -821,17 +825,22 @@ int main( int argc, char *argv[ ] )
         for (it = 0; it < nThick; it++){
           for( i=0; i<nxout; i++){
             for( j=0; j<nyout; j++){
-              fileout = fileoutpre + "_CBED_" + toString(i) + "-" + toString(j) + "-" + toString(it) + ".tif";
+              fileout = fileoutpre + "CBED_" + toString(i) + "-" + toString(j) + "-" + toString(it) + ".tif";
+              
+              }
               for( ix=0; ix<pacbed_nx; ix++){
-                for( iy=0; iy<pacbed_ny; iy++){ 
-                  myFile( ix, iy ) = cbed[ix][iy][i*nyout*nThick+j*nThick+it];
+                  for( iy=0; iy<pacbed_ny; iy++){ 
+                    cbed_out[ix][iy]=cbed[ix][iy][i*nyout*nThick+j*nThick+it];
+                  //myFile( ix, iy ) = cbed[ix][iy][i*nyout*nThick+j*nThick+it];
                 }
               }
-              if( myFile.write( fileout.c_str(), 0, 1, aimin, aimax,
+/*              if( myFile.write( fileout.c_str(), 0, 1, aimin, aimax,
                 (float) dx, (float) dy ) != 1 ) {
                     cout << "Cannot write output file " << fileout << " Error code: " << myFile.write( fileout.c_str(), rmin[it][i], rmax[it][i], aimin, aimax,
                 (float) dx, (float) dy ) << endl;
-              }
+              }*/
+              if( tcreateFloatPixFile( fileout, cbed_out,(long)pacbed_nx, (long)pacbed_ny, 1, param ) != 1 ) {  //old scheme to output tif file
+                cout << "Cannot write output file " << fileout << endl;
             }
           }
         }
