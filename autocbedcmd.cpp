@@ -214,6 +214,7 @@ int main( int argc, char *argv[ ] )
     floatTIFF myFile;
 
     autostem ast;
+    char *fileout_char = new char[512];
 
 /* start by announcing version etc */
 
@@ -825,7 +826,8 @@ int main( int argc, char *argv[ ] )
         for (it = 0; it < nThick; it++){
           for( i=0; i<nxout; i++){
             for( j=0; j<nyout; j++){
-              fileout = fileoutpre + "CBED_" + toString(i) + "-" + toString(j) + "-" + toString(it) + ".tif";
+              //fileout = fileoutpre + "CBED_" + toString(i) + "-" + toString(j) + "-" + toString(it) + ".tif";
+              sprintf(fileout_char,"%sCBED_%d%d.tif",fileoutpre.c_str(),i,it);
               
               }
               for( ix=0; ix<pacbed_nx; ix++){
@@ -839,7 +841,7 @@ int main( int argc, char *argv[ ] )
                     cout << "Cannot write output file " << fileout << " Error code: " << myFile.write( fileout.c_str(), rmin[it][i], rmax[it][i], aimin, aimax,
                 (float) dx, (float) dy ) << endl;
               }*/
-              if( tcreateFloatPixFile( fileout, cbed_out,(long)pacbed_nx, (long)pacbed_ny, 1, param ) != 1 ) {  //old scheme to output tif file
+              if( tcreateFloatPixFile( fileout_char, cbed_out,(long)pacbed_nx, (long)pacbed_ny, 1, param ) != 1 ) {  //old scheme to output tif file
                 cout << "Cannot write output file " << fileout << endl;
             }
           }
